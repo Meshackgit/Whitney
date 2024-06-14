@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Message for Whitney</title>
+    <style>
+        /* CSS styles for the fireworks and love message */
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300&display=swap');
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0d0d0d;
+            overflow: hidden;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            color: white;
+        }
+
+        .name-animation {
+            display: inline-block;
+            font-size: 2.5em;
+            font-family: 'Pacifico', cursive;
+            animation: float 3s infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        .message {
+            font-size: 1.5em;
+            animation: fadeIn 3s forwards;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .rain-heart {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff4b2b;
+            transform: rotate(45deg);
+            animation: fall 5s infinite;
+        }
+
+        .rain-heart::before,
+        .rain-heart::after {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: inherit;
+            border-radius: 50%;
+        }
+
+        .rain-heart::before {
+            top: -5px;
+            left: 0;
+        }
+
+        .rain-heart::after {
+            left: 5px;
+            top: 0;
+        }
+
+        @keyframes fall {
+            0% {
+                top: -10px;
+                opacity: 1;
+            }
+            100% {
+                top: 100vh;
+                opacity: 0;
+            }
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #0ff;
+            box-shadow: 0 0 20px 4px #0ff;
+            animation: shoot 3s ease-out infinite;
+        }
+
+        @keyframes shoot {
+            0% {
+                top: -10px;
+                left: -10px;
+                opacity: 1;
+            }
+            50% {
+                top: 50vh;
+                left: 50vw;
+                opacity: 1;
+            }
+            100% {
+                top: 110vh;
+                left: 110vw;
+                opacity: 0;
+            }
+        }
+
+        .firework {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: #fff;
+            animation: explode 1.5s ease-out infinite;
+        }
+
+        .firework:nth-child(odd) {
+            background: #ff4b2b;
+        }
+
+        .firework:nth-child(even) {
+            background: #0ff;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(3);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* Love message styles */
+        .love-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .love-message .message {
+            font-size: 2em;
+            font-family: 'Pacifico', cursive;
+            color: #fff; /* Adjust color as needed */
+        }
+    </style>
+</head>
+<body>
+    <!-- Canvas for fireworks -->
+    <div>
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <!-- Love message -->
+    <div class="love-message" id="message" style="display: none;">
+        <p class="message">I Love You <span class="name-animation">Whitney Mwangi</span>, Till I Breathe My Last</p>
+    </div>
+<!-- Background music -->
+<audio id="background-music" src="music/y2mate.com - Becky G Shower.mp3" autoplay loop muted></audio>
+
+<script>
+    document.addEventListener('click', () => {
+        const audio = document.getElementById('background-music');
+        audio.muted = false;
+        audio.play();
+    });
+</script>
+
+    <!-- JavaScript code for fireworks -->
+    <script>
+        // JavaScript code for fireworks
+    </script>
+
+    <!-- Inline styles -->
+    <style>
+        /* Inline styles */
+        body{
+            background:black;
+            overflow:hidden;
+            margin:0;
+        }
+        canvas{
+            background:#000;
+        }
+    </style>
+
+    <!-- JavaScript code for fireworks -->
+    <script>
+        window.addEventListener("resize", resizeCanvas, false);
+        window.addEventListener("DOMContentLoaded", onLoad, false);
+
+        window.requestAnimationFrame = 
+            window.requestAnimationFrame       || 
+            window.webkitRequestAnimationFrame || 
+            window.mozRequestAnimationFrame    || 
+            window.oRequestAnimationFrame      || 
+            window.msRequestAnimationFrame     || 
+            function (callback) {
+                window.setTimeout(callback, 1000/60);
+            };
+
+        var canvas, ctx, w, h, particles = [], probability = 0.04,
+            xPoint, yPoint;
+
+        function onLoad() {
+            canvas = document.getElementById("canvas");
+            ctx = canvas.getContext("2d");
+            resizeCanvas();
+
+            window.requestAnimationFrame(updateWorld);
+        } 
+
+        function resizeCanvas() {
+            if (!!canvas) {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+        } 
+
+        function updateWorld() {
+            update();
+            paint();
+            window.requestAnimationFrame(updateWorld);
+        } 
+
+        function update() {
+            if (particles.length < 500 && Math.random() < probability) {
+                createFirework();
+            }
+            var alive = [];
+            for (var i=0; i<particles.length; i++) {
+                if (particles[i].move()) {
+                    alive.push(particles[i]);
+                }
+            }
+            particles = alive;
+        } 
+
+        function paint() {
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.fillStyle = "rgba(0,0,0,0.2)";
+            ctx.fillRect(0, 0, w, h);
+            ctx.globalCompositeOperation = 'lighter';
+            for (var i=0; i<particles.length; i++) {
+                particles[i].draw(ctx);
+            }
+        } 
+
+        function createFirework() {
+            xPoint = Math.random()*(w-200)+100;
+            yPoint = Math.random()*(h-200)+100;
+            var nFire = Math.random()*50+100;
+            var c = "rgb("+(~~(Math.random()*200+55))+","
+                 +(~~(Math.random()*200+55))+","+(~~(Math.random()*200+55))+")";
+            for (var i=0; i<nFire; i++) {
+                var particle = new Particle();
+                particle.color = c;
+                var vy = Math.sqrt(25-particle.vx*particle.vx);
+                if (Math.abs(particle.vy) > vy) {
+                    particle.vy = particle.vy>0 ? vy: -vy;
+                }
+                particles.push(particle);
+            }
+        } 
+
+        function Particle() {
+            this.w = this.h = Math.random()*4+1;
+
+            this.x = xPoint-this.w/2;
+            this.y = yPoint-this.h/2;
+
+            this.vx = (Math.random()-0.5)*10;
+            this.vy = (Math.random()-0.5)*10;
+
+            this.alpha = Math.random()*.5+.5;
+
+            this.color;
+        } 
+
+        Particle.prototype = {
+            gravity: 0.05,
+            move: function () {
+                this.x += this.vx;
+                this.vy += this.gravity;
+                this.y += this.vy;
+                this.alpha -= 0.01;
+                if (this.x <= -this.w || this.x >= screen.width ||
+                    this.y >= screen.height ||
+                    this.alpha <= 0) {
+                        return false;
+                }
+                return true;
+            },
+            draw: function (c) {
+                c.save();
+                c.beginPath();
+
+                c.translate(this.x+this.w/2, this.y+this.h/2);
+                c.arc(0, 0, this.w, 0, Math.PI*2);
+                c.fillStyle = this.color;
+                c.globalAlpha = this.alpha;
+
+                c.closePath();
+                c.fill();
+                c.restore();
+            }
+        }
+    </script>
+
+    <!-- JavaScript code for love message and additional animations -->
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('message').style.display = 'block';
+                createFireworks();
+                createHeartRain();
+                createShootingStars();
+            }, 2000);
+        });
+
+        function createFireworks() {
+            const colors = ['#ff0', '#0ff', '#0f0', '#ff4b2b', '#ff416c'];
+            for (let i = 0; i < 50; i++) {
+                const firework = document.createElement('div');
+                firework.classList.add('firework');
+                firework.style.left = Math.random() * 100 + 'vw';
+                firework.style.top = Math.random() * 100 + 'vh';
+                firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                document.body.appendChild(firework);
+
+                setTimeout(() => {
+                    firework.remove();
+                }, 1500);
+            }
+            setTimeout(createFireworks, 1500);
+        }
+
+        function createHeartRain() {
+            for (let i = 0; i < 100; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('rain-heart');
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                document.body.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 5000);
+            }
+            setTimeout(createHeartRain, 5000);
+        }
+
+        function createShootingStars() {
+            for (let i = 0; i < 5; i++) {
+                const star = document.createElement('div');
+                star.classList.add('shooting-star');
+                star.style.animationDelay = Math.random() * 5 + 's';
+                document.body.appendChild(star);
+
+                setTimeout(() => {
+                    star.remove();
+                }, 3000);
+            }
+            setTimeout(createShootingStars, 5000);
+        }
+    </script>
+</body>
+</html>
